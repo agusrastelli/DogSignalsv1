@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dog Signals — What Do You Notice?</title>
+
+
+  <style>
+    :root{
+      --cream:#ffffeb;
+      --stone:#e4e4d0;
+      --ink:#1a1a1a;
+      --ink-deep:#111111;
+      --fog:#85857b;
+      --lavender:#f0d7ff;
+      --lavender-hover:#e8c6ff;
+      --forest:#034f46;
+      --orange:#ffa946;
+      --pulse:#7f1c34;
+      --white:#ffffff;
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+
+    html{background:var(--cream)}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--cream);
+      color:var(--ink);
+      font-family:"Figtree", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-weight:400;
+      line-height:1.35;
+    }
+
+    button, textarea, input{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+
+    .shell{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:28px 28px 72px;
+    }
+
+    .topbar{
+      min-height:58px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      margin-bottom:24px;
+      padding:0 4px;
+      font-size:14px;
+      color:var(--ink);
+    }
+
+    .brand{
+      font-weight:600;
+      letter-spacing:-.01em;
+    }
+
+    .progress{
+      display:flex;
+      gap:7px;
+      align-items:center;
+    }
+
+    .dot{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      border:1.5px solid var(--ink);
+      background:transparent;
+    }
+
+    .dot.on{
+      background:var(--forest);
+      border-color:var(--forest);
+    }
+
+    .panel{
+      background:var(--cream);
+      border:2px solid var(--ink);
+      border-radius:44px;
+      padding:clamp(30px,5vw,64px);
+      box-shadow:none;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      margin-bottom:20px;
+      padding:8px 11px;
+      border:1.5px solid var(--ink);
+      border-radius:10px;
+      background:var(--orange);
+      color:var(--ink);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    h1,h2{
+      font-family:"Bricolage Grotesque", "Arial Black", Arial, sans-serif;
+      font-weight:800;
+      color:var(--ink-deep);
+      letter-spacing:-.055em;
+      text-wrap:balance;
+    }
+
+    h1{
+      max-width:880px;
+      margin:0 0 24px;
+      font-size:clamp(50px,7.5vw,88px);
+      line-height:.92;
+    }
+
+    h2{
+      max-width:840px;
+      margin:0 0 18px;
+      font-size:clamp(38px,5.5vw,62px);
+      line-height:.96;
+    }
+
+    h3{
+      margin:32px 0 10px;
+      font-size:22px;
+      font-weight:600;
+    }
+
+    p{margin:0 0 18px}
+
+    .lede{
+      max-width:690px;
+      color:var(--ink);
+      font-size:20px;
+      line-height:1.4;
+    }
+
+    .notice{
+      max-width:760px;
+      margin:30px 0 0;
+      padding:19px 21px;
+      border:2px solid var(--ink);
+      border-radius:18px;
+      background:var(--stone);
+      color:var(--ink);
+    }
+
+    .photo{
+      width:100%;
+      max-height:570px;
+      display:block;
+      object-fit:contain;
+      margin:28px 0;
+      background:var(--stone);
+      border:2px solid var(--ink);
+      border-radius:32px;
+      box-shadow:none;
+    }
+
+    .question{
+      display:block;
+      max-width:900px;
+      margin-top:28px;
+      font-size:22px;
+      font-weight:600;
+      line-height:1.2;
+      letter-spacing:-.015em;
+    }
+
+    textarea{
+      width:100%;
+      min-height:150px;
+      margin:13px 0 0;
+      padding:18px 19px;
+      resize:vertical;
+      border:2px solid var(--ink);
+      border-radius:16px;
+      background:var(--white);
+      color:var(--ink);
+      box-shadow:none;
+    }
+
+    textarea::placeholder{color:var(--fog)}
+
+    textarea:focus,
+    button:focus-visible,
+    input:focus-visible{
+      outline:3px solid var(--lavender);
+      outline-offset:3px;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:12px;
+      margin-top:28px;
+    }
+
+    .btn{
+      min-height:50px;
+      padding:13px 20px;
+      border:2px solid var(--ink);
+      border-radius:12px;
+      background:var(--lavender);
+      color:var(--ink);
+      font-weight:600;
+      box-shadow:none;
+      transition:background .15s ease, transform .15s ease;
+    }
+
+    .btn:hover{
+      background:var(--lavender-hover);
+      transform:translateY(-1px);
+    }
+
+    .btn.secondary,
+    .btn.ghost{
+      background:transparent;
+      color:var(--ink);
+    }
+
+    .btn.secondary:hover,
+    .btn.ghost:hover{
+      background:var(--stone);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0 8px;
+    }
+
+    .chip{
+      padding:11px 14px;
+      border:2px solid var(--ink);
+      border-radius:12px;
+      background:transparent;
+      color:var(--ink);
+      font-weight:500;
+      box-shadow:none;
+    }
+
+    .chip:hover{background:var(--stone)}
+
+    .chip.active{
+      background:var(--lavender);
+      color:var(--ink);
+    }
+
+    .checks{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin:20px 0 4px;
+    }
+
+    .check{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      min-height:70px;
+      padding:16px;
+      border:2px solid var(--ink);
+      border-radius:16px;
+      background:transparent;
+    }
+
+    .check:hover{background:var(--stone)}
+
+    .check:has(input:checked){
+      background:var(--lavender);
+    }
+
+    .check input{
+      margin-top:3px;
+      accent-color:var(--forest);
+    }
+
+    .scale{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+      margin:20px 0 8px;
+    }
+
+    .scale button{
+      min-height:58px;
+      padding:12px;
+      border:2px solid var(--ink);
+      border-radius:14px;
+      background:transparent;
+      color:var(--ink);
+      font-weight:500;
+    }
+
+    .scale button:hover{background:var(--stone)}
+
+    .scale button.active{
+      background:var(--lavender);
+      font-weight:600;
+    }
+
+    .summary{
+      margin:18px 0;
+      padding:22px;
+      border:2px solid var(--ink);
+      border-radius:22px;
+      background:var(--white);
+    }
+
+    .summary strong{
+      display:inline-block;
+      margin-bottom:10px;
+      padding:5px 8px;
+      border-radius:8px;
+      background:var(--orange);
+      color:var(--ink);
+    }
+
+    .small{
+      color:var(--fog);
+      font-size:13px;
+    }
+
+    .credit{
+      margin-top:38px;
+      padding-top:18px;
+      border-top:1.5px solid var(--ink);
+      color:var(--fog);
+      font-size:12px;
+    }
+
+    .error{
+      padding:16px;
+      border:2px solid var(--pulse);
+      border-radius:16px;
+      background:#f8e4e4;
+      color:var(--pulse);
+    }
+
+    .hidden{display:none !important}
+
+    /* Welcome and final screens get one darker "chapter" moment,
+       echoing Flow's light/dark editorial rhythm. */
+    .panel:has(.eyebrow:first-child) .brandmark{color:var(--forest)}
+
+    @media (min-width:900px){
+      /* Keep the study content broad and airy rather than dashboard-like. */
+      .panel{
+        min-height:620px;
+      }
+
+      textarea{
+        max-width:100%;
+      }
+    }
+
+    @media (max-width:760px){
+      .shell{padding:18px 12px 44px}
+      .panel{border-radius:30px;padding:28px 20px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .checks{grid-template-columns:1fr}
+      .scale{grid-template-columns:repeat(2,minmax(0,1fr))}
+      h1{font-size:clamp(48px,16vw,70px)}
+      h2{font-size:clamp(38px,13vw,56px)}
+      .btn{width:100%}
+      .actions .btn.secondary{order:2}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto !important;transition:none !important}
+    }
+  </style>
+
+
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">Dog Signals · research prototype</div>
+    <div class="progress" id="progress" aria-label="Prototype progress"></div>
+  </div>
+
+  <main class="panel" id="app" aria-live="polite"></main>
+</div>
+
+<script>
+const scenarios = [
+  {
+    id: 1,
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/88/Dog_body_language_licking_nose_%28no_food%29_drooped_ears_%28cropped%29.jpg",
+    alt: "A close-up photograph of a black and white dog indoors.",
+    credit: 'Photo 1: Gopal Aggarwal, via Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/2.5/" target="_blank" rel="noreferrer">CC BY-SA 2.5</a>.'
+  },
+  {
+    id: 2,
+    image: "https://upload.wikimedia.org/wikipedia/commons/f/f8/Full_Body_when_approached.jpg",
+    alt: "A photograph of two dogs outdoors, one positioned behind the other.",
+    credit: 'Photo 2: Nishi.LovesBees, via Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.'
+  }
+];
+
+const bodyAreas = ["Ears", "Eyes / gaze", "Mouth / tongue", "Body posture", "Tail", "Movement", "Distance / surroundings"];
+const contextOptions = [
+  "What happened immediately before this?",
+  "What happens a few seconds later?",
+  "How familiar is the dog with the person or other dog?",
+  "Is food, a toy, or another resource nearby?",
+  "Does the dog have space to move away?",
+  "Something else"
+];
+
+let state = {
+  screen: "welcome",
+  scenarioIndex: 0,
+  answers: scenarios.map(() => ({
+    first: "", second: "", areas: [], context: [], reflection: "", changed: ""
+  }))
+};
+
+const app = document.getElementById("app");
+const progress = document.getElementById("progress");
+
+function esc(s=""){
+  return s.replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+}
+
+function setProgress(step){
+  const total = 6;
+  progress.innerHTML = "";
+  for(let i=1;i<=total;i++){
+    const dot=document.createElement("span");
+    dot.className="dot"+(i<=step?" on":"");
+    progress.appendChild(dot);
+  }
+}
+
+function imageBlock(sc){
+  return `
+    <img class="photo" src="${sc.image}" alt="${sc.alt}"
+      onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')" />
+    <div class="error hidden">The research image could not load. This prototype needs an internet connection to display the Wikimedia Commons photos.</div>
+  `;
+}
+
+function render(){
+  const a = state.answers[state.scenarioIndex];
+  const sc = scenarios[state.scenarioIndex];
+  if(state.screen==="welcome"){
+    setProgress(1);
+    app.innerHTML=`
+      <div class="eyebrow">Early concept · V2</div>
+      <h1>Notice first.<br>Interpret later.</h1>
+      <p class="lede">You’ll look at two real dog photos. We’re interested in what you notice and what information you would want before interpreting the situation.</p>
+      <div class="notice"><strong>There are no right or wrong answers.</strong><br>This prototype does not diagnose a dog’s emotion or teach a “correct” meaning for a signal.</div>
+      <div class="actions"><button class="btn" onclick="go('observe')">Start</button></div>
+    `;
+    return;
+  }
+
+  if(state.screen==="observe"){
+    setProgress(2);
+    app.innerHTML=`
+      <div class="eyebrow">Photo ${state.scenarioIndex+1} of ${scenarios.length} · First look</div>
+      <h2>What do you notice?</h2>
+      <p>Look at the photo before using any prompts. Write anything that stands out to you.</p>
+      ${imageBlock(sc)}
+      <label class="question" for="first">What do you notice about the dog or the situation?</label>
+      <textarea id="first" placeholder="Write what you notice...">${esc(a.first)}</textarea>
+      <div class="actions"><button class="btn" onclick="saveFirst()">Next: Take another look</button></div>
+    `;
+    return;
+  }
+
+  if(state.screen==="guided"){
+    setProgress(3);
+    app.innerHTML=`
+      <div class="eyebrow">Photo ${state.scenarioIndex+1} · Second look</div>
+      <h2>Take another look.</h2>
+      <p>Without deciding what the behavior means, choose the areas you looked at this time.</p>
+      ${imageBlock(sc)}
+      <div class="chips" id="areas">
+        ${bodyAreas.map(x=>`<button class="chip ${a.areas.includes(x)?"active":""}" onclick="toggleArea('${x.replaceAll("'","\\'")}')">${x}</button>`).join("")}
+      </div>
+      <label class="question" for="second">What else do you notice now?</label>
+      <textarea id="second" placeholder="Add any new observations...">${esc(a.second)}</textarea>
+      <div class="actions">
+        <button class="btn secondary" onclick="go('observe')">Back</button>
+        <button class="btn" onclick="saveSecond()">Next: Consider context</button>
+      </div>
+    `;
+    return;
+  }
+
+  if(state.screen==="context"){
+    setProgress(4);
+    app.innerHTML=`
+      <div class="eyebrow">Photo ${state.scenarioIndex+1} · Context</div>
+      <h2>What else would you want to know?</h2>
+      <p>Before deciding what the dog may be communicating, which additional information would feel useful?</p>
+      <div class="checks">
+        ${contextOptions.map(x=>`
+          <label class="check">
+            <input type="checkbox" ${a.context.includes(x)?"checked":""} onchange="toggleContext('${x.replaceAll("'","\\'")}')">
+            <span>${x}</span>
+          </label>`).join("")}
+      </div>
+      <div class="actions">
+        <button class="btn secondary" onclick="go('guided')">Back</button>
+        <button class="btn" onclick="go('reflect')">Next: Reflection</button>
+      </div>
+    `;
+    return;
+  }
+
+  if(state.screen==="reflect"){
+    setProgress(5);
+    app.innerHTML=`
+      <div class="eyebrow">Photo ${state.scenarioIndex+1} · Reflection</div>
+      <h2>Did looking again change your thinking?</h2>
+      <p>You do not need to decide what the dog “means.” We’re interested in whether the second look changed what you noticed.</p>
+      <div class="scale">
+        ${["Yes","A little","No","I’m not sure"].map(x=>`<button class="${a.reflection===x?"active":""}" onclick="setReflection('${x}')">${x}</button>`).join("")}
+      </div>
+      <label class="question" for="changed">What changed, if anything?</label>
+      <textarea id="changed" placeholder="Optional...">${esc(a.changed)}</textarea>
+      <div class="actions">
+        <button class="btn secondary" onclick="go('context')">Back</button>
+        <button class="btn" onclick="finishScenario()">${state.scenarioIndex===0?"Next: Photo 2":"Finish"}</button>
+      </div>
+    `;
+    return;
+  }
+
+  if(state.screen==="summary"){
+    setProgress(6);
+    app.innerHTML=`
+      <div class="eyebrow">End of prototype</div>
+      <h2>Thanks. This was about observation, not being right.</h2>
+      <p class="lede">The concept is testing whether a guided second look helps people notice more parts of a dog and consider more context before interpreting a situation.</p>
+      ${state.answers.map((x,i)=>`
+        <div class="summary">
+          <strong>Photo ${i+1}</strong>
+          <div><b>First look:</b> ${esc(x.first)||"<span class='small'>No written response</span>"}</div>
+          <div><b>Areas checked on second look:</b> ${x.areas.length?esc(x.areas.join(", ")):"<span class='small'>None selected</span>"}</div>
+          <div><b>Additional observation:</b> ${esc(x.second)||"<span class='small'>No written response</span>"}</div>
+          <div><b>Wanted more context about:</b> ${x.context.length?esc(x.context.join("; ")):"<span class='small'>None selected</span>"}</div>
+          <div><b>Did the second look change thinking?</b> ${esc(x.reflection)||"<span class='small'>No response</span>"}</div>
+        </div>
+      `).join("")}
+      <div class="notice"><strong>Research boundary:</strong> This prototype does not provide behavioral diagnoses or “correct answers.” A later educational version would need qualified review of any claims about canine behavior.</div>
+      <div class="actions">
+        <button class="btn" onclick="restart()">Start over</button>
+      </div>
+      <div class="credit">
+        <strong>Image credits</strong><br>
+        ${scenarios.map(x=>x.credit).join("<br>")}
+      </div>
+    `;
+  }
+}
+
+function go(screen){
+  if(state.screen==="guided"){
+    const el=document.getElementById("second"); if(el) state.answers[state.scenarioIndex].second=el.value.trim();
+  }
+  if(state.screen==="reflect"){
+    const el=document.getElementById("changed"); if(el) state.answers[state.scenarioIndex].changed=el.value.trim();
+  }
+  state.screen=screen; window.scrollTo({top:0,behavior:"smooth"}); render();
+}
+function saveFirst(){
+  state.answers[state.scenarioIndex].first=document.getElementById("first").value.trim();
+  go("guided");
+}
+function saveSecond(){
+  state.answers[state.scenarioIndex].second=document.getElementById("second").value.trim();
+  go("context");
+}
+function toggleArea(x){
+  const arr=state.answers[state.scenarioIndex].areas;
+  const i=arr.indexOf(x); if(i>=0) arr.splice(i,1); else arr.push(x);
+  render();
+}
+function toggleContext(x){
+  const arr=state.answers[state.scenarioIndex].context;
+  const i=arr.indexOf(x); if(i>=0) arr.splice(i,1); else arr.push(x);
+}
+function setReflection(x){
+  state.answers[state.scenarioIndex].reflection=x; render();
+}
+function finishScenario(){
+  const el=document.getElementById("changed"); if(el) state.answers[state.scenarioIndex].changed=el.value.trim();
+  if(state.scenarioIndex===0){
+    state.scenarioIndex=1; state.screen="observe"; window.scrollTo({top:0,behavior:"smooth"}); render();
+  } else {
+    state.screen="summary"; window.scrollTo({top:0,behavior:"smooth"}); render();
+  }
+}
+function restart(){
+  state={screen:"welcome",scenarioIndex:0,answers:scenarios.map(()=>({first:"",second:"",areas:[],context:[],reflection:"",changed:""}))};
+  render();
+}
+render();
+</script>
+</body>
+</html>
